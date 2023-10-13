@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TCKfinalProject.Models.SumSaleQuantity>
+@{
+    ViewBag.Title = "StatisticFood";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>StatisticFood</h2>
+<table class="table">
+    <tr>
+        <th><strong>Food Name</strong></th>
+        <th><strong>Sale Quantity</strong></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.foodName)</td>
+            <td>
+                @if (item.SumQuantity == null)
+                {
+                    <label style="font-weight:normal">0</label>
+                }
+                else
+                {
+                    @item.SumQuantity
+                }
+            </td>
+        </tr>
+    }
+</table>
+

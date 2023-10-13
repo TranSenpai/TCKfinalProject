@@ -1,0 +1,100 @@
+﻿@model PagedList.IPagedList<TCKfinalProject.Models.food>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>HUTECH LIBRARY</h2>
+<div class="row">
+    <p style="padding-left=10px;">
+        @Html.ActionLink("Create", "Create", "Home", new { @class = "btn btn-default" })
+    </p>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+        <div class="form-group form-inline" style="display: flex;">
+            <input type="text" class="form-control col-md-10" value="@ViewBag.Keyword" name="input_name" placeholder="Enter book's name" />
+            <input type="submit" / class="btn btn-info" value="Search" style="margin-left:10px;">
+        </div>
+        <br />
+    }
+    <p style="padding-left=10px;">
+        @Html.ActionLink("Search", "Search", "Home", new { @class = "btn btn-default" })
+    </p>
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    @item.food_name
+                    @Html.ActionLink("Edit", "Edit", new { id = item.food_id }, new { @class = "pull-right" })
+                </div>
+                <div class="panel-body">
+                    <p><strong>Price:</strong>@item.price</p>
+                    <p><strong>Date Update:</strong>@item.update_date</p>
+                    <p><strong>Quantity in Stock:</strong>@item.quantity_instock</p>
+                    <p><img src="@item.image" alt="hinh thumnail" /></p>
+                </div>
+                <div class="panel-footer clearfix">
+                    <div class="pull-right">
+                        <a href="#" class="btn btn-primary">Order</a>
+                        @Html.ActionLink("Read more...", "Detail", new { id = item.food_id }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.food_id }, new { @class = "btn btn-default" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        <div>
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+        </div>
+        <div class="Menu">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+        </div>
+    </div>
+    <style>
+        .Menu li {
+            display: inline;
+        }
+    </style>
+    <style type="text/css">
+        #mau-nut a {
+            clear: both;
+            background-color: orange;
+            color: snow;
+        }
+
+            #mau-nut a:hover {
+                background-color: darkcyan;
+                color: snow;
+            }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+         $(document).ready(function () {
+             var maxLength = 100;
+             $(".show-read-more").each(function () {
+                 var myStr = $(this).text();
+                 if ($.trim(myStr).length > maxLength) {
+                     var newStr = myStr.substring(0, maxLength);
+                     var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+                     $(this).empty().html(newStr);
+                     $(this).append(' <a href="javascript:void(0);" class="read-more">read continue...</a > ');
+                     $(this).append('<span class="more-text">' + removedStr + '</span>');
+                 }
+             });
+             $(".read-more").click(function () {
+                 $(this).siblings(".more-text").contents().unwrap();
+                 $(this).remove();
+             });
+         });
+    </script>
+    <style>
+        .show-read-more .more-text {
+            display: none;
+        }
+    </style>
+</div>
+

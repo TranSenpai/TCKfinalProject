@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="finalProjectASP" Class="dbfinalProjectASPDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=LAPTOP-TE1PJ8G6\SQLEXPRESS;Initial Catalog=finalProjectASP;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="finalProjectASPConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.admins" Member="admins">
+    <Type Name="admin">
+      <Column Name="admin_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="admin_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="admin_username" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="admin_password" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="admin_email" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.customers" Member="customers">
+    <Type Name="customer">
+      <Column Name="customer_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="customer_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="numberphone" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Column Name="dob" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Association Name="customer_order" Member="orders" ThisKey="customer_id" OtherKey="customer_id" Type="order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.foods" Member="foods">
+    <Type Name="food">
+      <Column Name="food_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="food_name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="image" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="update_date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="quantity_instock" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="food_orderdetail" Member="orderdetails" ThisKey="food_id" OtherKey="food_id" Type="orderdetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Merchant" Member="Merchants">
+    <Type Name="Merchant">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MerchanName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MerchanWebLink" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="MerchantlpnUrl" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="MerchantReturnUrl" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="SecretKey" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Merchant_Payment" Member="Payments" ThisKey="Id" OtherKey="MerchantId" Type="Payment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.orderdetails" Member="orderdetails">
+    <Type Name="orderdetail">
+      <Column Name="order_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="food_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Association Name="food_orderdetail" Member="food" ThisKey="food_id" OtherKey="food_id" Type="food" IsForeignKey="true" />
+      <Association Name="order_orderdetail" Member="order" ThisKey="order_id" OtherKey="order_id" Type="order" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.orders" Member="orders">
+    <Type Name="order">
+      <Column Name="order_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ispayment" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="isship" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="order_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="delivery_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="customer_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="order_orderdetail" Member="orderdetails" ThisKey="order_id" OtherKey="order_id" Type="orderdetail" />
+      <Association Name="customer_order" Member="customer" ThisKey="customer_id" OtherKey="customer_id" Type="customer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Payment" Member="Payments">
+    <Type Name="Payment">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PaymentContent" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="PaymentCurrency" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="PaymentRefId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="RequiredAmount" Type="System.Decimal" DbType="Decimal(19,2)" CanBeNull="true" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ExpireDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PaymentLanguage" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MerchantId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PaymentDestinationId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(19,2)" CanBeNull="true" />
+      <Column Name="PaymentStatus" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="PaymentLastMessage" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Association Name="Payment_PaymentNotification" Member="PaymentNotifications" ThisKey="Id" OtherKey="PaymentId" Type="PaymentNotification" />
+      <Association Name="Payment_PaymentSignature" Member="PaymentSignatures" ThisKey="Id" OtherKey="PaymentId" Type="PaymentSignature" />
+      <Association Name="Payment_PaymentTransaction" Member="PaymentTransactions" ThisKey="Id" OtherKey="PaymentId" Type="PaymentTransaction" />
+      <Association Name="Merchant_Payment" Member="Merchant" ThisKey="MerchantId" OtherKey="Id" Type="Merchant" IsForeignKey="true" />
+      <Association Name="PaymentDestination_Payment" Member="PaymentDestination" ThisKey="PaymentDestinationId" OtherKey="Id" Type="PaymentDestination" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentDestination" Member="PaymentDestinations">
+    <Type Name="PaymentDestination">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DesLogo" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="DesShortName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DesName" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="DesSortIndex" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="PaymentDestination_Payment" Member="Payments" ThisKey="Id" OtherKey="PaymentDestinationId" Type="Payment" />
+      <Association Name="PaymentDestination_PaymentDestination" Member="PaymentDestinations" ThisKey="Id" OtherKey="PaymentId" Type="PaymentDestination" />
+      <Association Name="PaymentDestination_PaymentDestination" Member="PaymentDestination1" ThisKey="PaymentId" OtherKey="Id" Type="PaymentDestination" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentNotification" Member="PaymentNotifications">
+    <Type Name="PaymentNotification">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PaymentRefId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NotiDate" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NotiAmount" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NotiContent" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NotiMessage" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NotiSignature" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PaymentId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MerchantId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NotiStatus" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NotiRefDate" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Payment_PaymentNotification" Member="Payment" ThisKey="PaymentId" OtherKey="Id" Type="Payment" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentSignature" Member="PaymentSignatures">
+    <Type Name="PaymentSignature">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SignValue" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="SignAlgo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SignDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SignOwn" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PaymentId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Payment_PaymentSignature" Member="Payment" ThisKey="PaymentId" OtherKey="Id" Type="Payment" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentTransaction" Member="PaymentTransactions">
+    <Type Name="PaymentTransaction">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TranMessage" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="TranPayload" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="TranStatus" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TranAmount" Type="System.Decimal" DbType="Decimal(19,2)" CanBeNull="true" />
+      <Column Name="TranDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PaymentId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Payment_PaymentTransaction" Member="Payment" ThisKey="PaymentId" OtherKey="Id" Type="Payment" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
